@@ -1,0 +1,82 @@
+@prefix : <https://purl.org/oquo#> .
+@prefix ex: <http://example.org/test#> .
+@prefix om: <http://www.wurvoc.org/vocabularies/om-1.8/> .
+@prefix qm: <http://purl.org/net/QualityModel#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Minimal OQUO-like module used by the tests. It has no imports so tests run offline.
+
+<http://example.org/test-module> a owl:Ontology .
+
+# Vocabulary
+
+om:Ratio_scale a owl:Class .
+om:Ordinal_scale a owl:Class .
+qm:DerivedMeasure a owl:Class .
+qm:OrdinalScaleItem a owl:Class .
+:RawScale a owl:Class .
+:OquareFiveCategoriesCategory a owl:Class .
+:ScaleConversion a owl:Class .
+:ScalePointMapping a owl:Class .
+:CardinalToOrdinalScaleConversion a owl:Class ; rdfs:subClassOf :ScaleConversion .
+:CardinalToOrdinalScalePointMapping a owl:Class ; rdfs:subClassOf :ScalePointMapping .
+:OrdinalToOrdinalScaleConversion a owl:Class ; rdfs:subClassOf :ScaleConversion .
+:OrdinalToOrdinalScalePointMapping a owl:Class ; rdfs:subClassOf :ScalePointMapping .
+:Interval a owl:Class .
+
+:hasInputScale a owl:ObjectProperty .
+:hasOutputScale a owl:ObjectProperty .
+:hasScalePointMapping a owl:ObjectProperty .
+:hasInputCardinalInterval a owl:ObjectProperty .
+:hasInputScaleCategory a owl:ObjectProperty .
+:hasOutputScaleCategory a owl:ObjectProperty .
+:hasIntervalLowerBoundType a owl:ObjectProperty .
+:hasIntervalUpperBoundType a owl:ObjectProperty .
+:hasIntervalLowerValue a owl:DatatypeProperty .
+:hasIntervalUpperValue a owl:DatatypeProperty .
+
+:OpenIntervalBound a owl:NamedIndividual .
+:ClosedIntervalBound a owl:NamedIndividual .
+
+# Output scale
+
+:OquareFiveCategoriesScale a owl:NamedIndividual, om:Ordinal_scale .
+:OquareCategory1 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
+:OquareCategory2 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
+:OquareCategory3 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
+:OquareCategory4 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
+:OquareCategory5 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
+
+# Ratio metric with a pre-existing conversion (used to test --overwrite-scales)
+
+:NamesPerPropertyMetric a owl:Class ;
+    rdfs:subClassOf qm:DerivedMeasure .
+
+:NamesPerPropertyMetricScale a owl:NamedIndividual, om:Ratio_scale, :RawScale .
+
+:scaleConversion-existing a owl:NamedIndividual, :CardinalToOrdinalScaleConversion ;
+    :hasInputScale :NamesPerPropertyMetricScale ;
+    :hasOutputScale :OquareFiveCategoriesScale ;
+    :hasScalePointMapping :scalePointMapping-existing .
+
+:scalePointMapping-existing a owl:NamedIndividual, :CardinalToOrdinalScalePointMapping ;
+    :hasOutputScaleCategory :OquareCategory1 ;
+    :hasInputCardinalInterval :interval-existing .
+
+:interval-existing a owl:NamedIndividual, :Interval ;
+    :hasIntervalLowerValue "0.0"^^xsd:double ;
+    :hasIntervalLowerBoundType :ClosedIntervalBound ;
+    :hasIntervalUpperValue "1.0"^^xsd:double ;
+    :hasIntervalUpperBoundType :OpenIntervalBound .
+
+# Ordinal metric. It is deliberately not declared as a DerivedMeasure, to check that
+# --create-metric does not modify existing metrics.
+
+ex:LikertMetric a owl:Class .
+
+ex:LikertScale a owl:NamedIndividual, om:Ordinal_scale .
+ex:Low a owl:NamedIndividual, qm:OrdinalScaleItem .
+ex:Medium a owl:NamedIndividual, qm:OrdinalScaleItem .
+ex:High a owl:NamedIndividual, qm:OrdinalScaleItem .
