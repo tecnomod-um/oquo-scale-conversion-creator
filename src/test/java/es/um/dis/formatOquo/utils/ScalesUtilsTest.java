@@ -34,12 +34,13 @@ class ScalesUtilsTest {
 	private static final String OQUO = OWLUtils.OQUO_NS;
 	private static final String OM = OWLUtils.OM_NS;
 	private static final String EX = "http://example.org/test#";
+	private static final String OQM = "https://purl.org/oquo-oquare-qm#";
 
 	private static final String HEADER = row("metric", "input_scale", "output_scale", "1", "2", "3", "4", "5", "Notas");
 
 	private static final String NAMES_METRIC = OQUO + "NamesPerPropertyMetric";
 	private static final String NAMES_SCALE = OQUO + "NamesPerPropertyMetricScale";
-	private static final String OQUARE_SCALE = OQUO + "OquareFiveCategoriesScale";
+	private static final String OQUARE_SCALE = OQM + "OquareFiveCategoriesScale";
 	private static final String NAMES_ROW = row(NAMES_METRIC, NAMES_SCALE, OQUARE_SCALE,
 			"[0, 0.1)", "[0.1, 0.97)", "[0.97, 1.03)", "[1.03, 1.5)", "[1.5, Inf)", "");
 
@@ -65,7 +66,7 @@ class ScalesUtilsTest {
 		}
 
 		OWLNamedIndividual interval3 = single(objectValuesAsIndividuals(result,
-				mappingsByCategory.get(IRI.create(OQUO + "OquareCategory3")), OWLUtils.HAS_INPUT_CARDINAL_INTERVAL_IRI));
+				mappingsByCategory.get(IRI.create(OQM + "OquareCategory3")), OWLUtils.HAS_INPUT_CARDINAL_INTERVAL_IRI));
 		assertTrue(hasType(result, interval3, OWLUtils.INTERVAL_IRI));
 		assertEquals("0.97", dataValue(result, interval3, OWLUtils.HAS_INTERVAL_LOWER_VALUE_IRI));
 		assertEquals("1.03", dataValue(result, interval3, OWLUtils.HAS_INTERVAL_UPPER_VALUE_IRI));
@@ -81,7 +82,7 @@ class ScalesUtilsTest {
 
 		OWLNamedIndividual conversion = single(newConversions(result, NAMES_SCALE));
 		OWLNamedIndividual interval5 = single(objectValuesAsIndividuals(result,
-				mappingsByOutputCategory(result, conversion).get(IRI.create(OQUO + "OquareCategory5")),
+				mappingsByOutputCategory(result, conversion).get(IRI.create(OQM + "OquareCategory5")),
 				OWLUtils.HAS_INPUT_CARDINAL_INTERVAL_IRI));
 		assertEquals("1.5", dataValue(result, interval5, OWLUtils.HAS_INTERVAL_LOWER_VALUE_IRI));
 		assertEquals("INF", dataValue(result, interval5, OWLUtils.HAS_INTERVAL_UPPER_VALUE_IRI));
@@ -175,17 +176,17 @@ class ScalesUtilsTest {
 		assertEquals(Set.of(IRI.create(OQUARE_SCALE)), objectValues(result, conversion, OWLUtils.HAS_OUTPUT_SCALE_IRI));
 
 		Map<IRI, OWLNamedIndividual> mappingsByCategory = mappingsByOutputCategory(result, conversion);
-		assertEquals(Set.of(IRI.create(OQUO + "OquareCategory1"), IRI.create(OQUO + "OquareCategory3"),
-				IRI.create(OQUO + "OquareCategory5")), mappingsByCategory.keySet());
+		assertEquals(Set.of(IRI.create(OQM + "OquareCategory1"), IRI.create(OQM + "OquareCategory3"),
+				IRI.create(OQM + "OquareCategory5")), mappingsByCategory.keySet());
 		for (OWLNamedIndividual mapping : mappingsByCategory.values()) {
 			assertTrue(hasType(result, mapping, OWLUtils.ORDINAL_TO_ORDINAL_SCALE_POINT_MAPPING_IRI));
 		}
 		assertEquals(Set.of(IRI.create(EX + "Low")), objectValues(result,
-				mappingsByCategory.get(IRI.create(OQUO + "OquareCategory1")), OWLUtils.HAS_INPUT_SCALE_CATEGORY_IRI));
+				mappingsByCategory.get(IRI.create(OQM + "OquareCategory1")), OWLUtils.HAS_INPUT_SCALE_CATEGORY_IRI));
 		assertEquals(Set.of(IRI.create(EX + "Medium")), objectValues(result,
-				mappingsByCategory.get(IRI.create(OQUO + "OquareCategory3")), OWLUtils.HAS_INPUT_SCALE_CATEGORY_IRI));
+				mappingsByCategory.get(IRI.create(OQM + "OquareCategory3")), OWLUtils.HAS_INPUT_SCALE_CATEGORY_IRI));
 		assertEquals(Set.of(IRI.create(EX + "High")), objectValues(result,
-				mappingsByCategory.get(IRI.create(OQUO + "OquareCategory5")), OWLUtils.HAS_INPUT_SCALE_CATEGORY_IRI));
+				mappingsByCategory.get(IRI.create(OQM + "OquareCategory5")), OWLUtils.HAS_INPUT_SCALE_CATEGORY_IRI));
 	}
 
 	@Test
@@ -300,13 +301,14 @@ class ScalesUtilsTest {
 				@prefix owl: <http://www.w3.org/2002/07/owl#> .
 				@prefix om: <http://www.wurvoc.org/vocabularies/om-1.8/> .
 				@prefix oquo: <https://purl.org/oquo#> .
+				@prefix oqm: <https://purl.org/oquo-oquare-qm#> .
 				<http://example.org/module-with-nominal-scale> a owl:Ontology ;
 				    owl:imports <%s> .
 				om:Nominal_scale a owl:Class .
 				oquo:NominalScale a owl:NamedIndividual, om:Nominal_scale .
 				oquo:scaleConversion-nominal a owl:NamedIndividual, oquo:CardinalToOrdinalScaleConversion ;
 				    oquo:hasInputScale oquo:NominalScale ;
-				    oquo:hasOutputScale oquo:OquareFiveCategoriesScale .
+				    oquo:hasOutputScale oqm:OquareFiveCategoriesScale .
 				""", fixture().toURI()));
 
 		OWLOntology result = run(module, OVERWRITE, row(NAMES_METRIC, OQUO + "NominalScale", OQUARE_SCALE,

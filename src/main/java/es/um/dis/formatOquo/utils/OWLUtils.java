@@ -33,14 +33,15 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 public class OWLUtils {
 	public static final String OQUO_NS = "https://purl.org/oquo#";
+	public static final String OQUARE_QM_NS = "https://purl.org/oquo-oquare-qm#";
 	public static final String OM_NS = "http://www.wurvoc.org/vocabularies/om-1.8/";
 	public static final String QM_NS = "http://purl.org/net/QualityModel#";
 	public static final String IAO_NS = "http://purl.obolibrary.org/obo/";
 	public static final String XSD_NS = "http://www.w3.org/2001/XMLSchema#";
 	public static final String IAO_DEFINITION_IRI = IAO_NS + "IAO_0000115";
 	public static final String RAW_SCALE_IRI = OQUO_NS + "RawScale";
-	public static final String OQUARE_SCALE_IRI = OQUO_NS + "OquareScale";
-	public static final String OQUARE_FIVE_CATEGORIES_SCALE_IRI = OQUO_NS + "OquareFiveCategoriesScale";
+	public static final String OQUARE_SCALE_IRI = OQUARE_QM_NS + "OquareScale";
+	public static final String OQUARE_FIVE_CATEGORIES_SCALE_IRI = OQUARE_QM_NS + "OquareFiveCategoriesScale";
 	public static final String HAS_RANKING_FUNCTION_IRI = QM_NS + "hasRankigFunction";
 	public static final String HAS_SCALE_IRI = QM_NS + "hasScale";
 	public static final String HAS_INPUT_SCALE_IRI = OQUO_NS + "hasInputScale";

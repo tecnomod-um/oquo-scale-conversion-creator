@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.um.dis</groupId>
 	<artifactId>oquo-scale-conversion-creator</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 
 	<properties>
 		<commons-cli.version>1.4</commons-cli.version>

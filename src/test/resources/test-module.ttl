@@ -1,4 +1,5 @@
 @prefix : <https://purl.org/oquo#> .
+@prefix oqm: <https://purl.org/oquo-oquare-qm#> .
 @prefix ex: <http://example.org/test#> .
 @prefix om: <http://www.wurvoc.org/vocabularies/om-1.8/> .
 @prefix qm: <http://purl.org/net/QualityModel#> .
@@ -17,7 +18,6 @@ om:Ordinal_scale a owl:Class .
 qm:DerivedMeasure a owl:Class .
 qm:OrdinalScaleItem a owl:Class .
 :RawScale a owl:Class .
-:OquareFiveCategoriesCategory a owl:Class .
 :ScaleConversion a owl:Class .
 :ScalePointMapping a owl:Class .
 :CardinalToOrdinalScaleConversion a owl:Class ; rdfs:subClassOf :ScaleConversion .
@@ -40,14 +40,16 @@ qm:OrdinalScaleItem a owl:Class .
 :OpenIntervalBound a owl:NamedIndividual .
 :ClosedIntervalBound a owl:NamedIndividual .
 
-# Output scale
+# Output scale, defined in the OQuaRE quality model (oquo-oquare-qm)
 
-:OquareFiveCategoriesScale a owl:NamedIndividual, om:Ordinal_scale .
-:OquareCategory1 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
-:OquareCategory2 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
-:OquareCategory3 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
-:OquareCategory4 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
-:OquareCategory5 a owl:NamedIndividual, :OquareFiveCategoriesCategory .
+oqm:OquareFiveCategoriesCategory a owl:Class .
+
+oqm:OquareFiveCategoriesScale a owl:NamedIndividual, om:Ordinal_scale .
+oqm:OquareCategory1 a owl:NamedIndividual, oqm:OquareFiveCategoriesCategory .
+oqm:OquareCategory2 a owl:NamedIndividual, oqm:OquareFiveCategoriesCategory .
+oqm:OquareCategory3 a owl:NamedIndividual, oqm:OquareFiveCategoriesCategory .
+oqm:OquareCategory4 a owl:NamedIndividual, oqm:OquareFiveCategoriesCategory .
+oqm:OquareCategory5 a owl:NamedIndividual, oqm:OquareFiveCategoriesCategory .
 
 # Ratio metric with a pre-existing conversion (used to test --overwrite-scales)
 
@@ -58,11 +60,11 @@ qm:OrdinalScaleItem a owl:Class .
 
 :scaleConversion-existing a owl:NamedIndividual, :CardinalToOrdinalScaleConversion ;
     :hasInputScale :NamesPerPropertyMetricScale ;
-    :hasOutputScale :OquareFiveCategoriesScale ;
+    :hasOutputScale oqm:OquareFiveCategoriesScale ;
     :hasScalePointMapping :scalePointMapping-existing .
 
 :scalePointMapping-existing a owl:NamedIndividual, :CardinalToOrdinalScalePointMapping ;
-    :hasOutputScaleCategory :OquareCategory1 ;
+    :hasOutputScaleCategory oqm:OquareCategory1 ;
     :hasInputCardinalInterval :interval-existing .
 
 :interval-existing a owl:NamedIndividual, :Interval ;

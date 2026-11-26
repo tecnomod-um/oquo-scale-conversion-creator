@@ -8,19 +8,19 @@ import es.um.dis.formatOquo.utils.OWLUtils;
 public enum OquareCategory {
 
 	/** The category1. */
-	CATEGORY1(OWLUtils.OQUO_NS + "OquareCategory1", "Not acceptable", 1),
+	CATEGORY1(OWLUtils.OQUARE_QM_NS + "OquareCategory1", "Not acceptable", 1),
 
 	/** The category2. */
-	CATEGORY2(OWLUtils.OQUO_NS + "OquareCategory2", "Insufficient", 2),
+	CATEGORY2(OWLUtils.OQUARE_QM_NS + "OquareCategory2", "Insufficient", 2),
 
 	/** The category3. */
-	CATEGORY3(OWLUtils.OQUO_NS + "OquareCategory3", "Minimally acceptable", 3),
+	CATEGORY3(OWLUtils.OQUARE_QM_NS + "OquareCategory3", "Minimally acceptable", 3),
 
 	/** The category4. */
-	CATEGORY4(OWLUtils.OQUO_NS + "OquareCategory4", "Acceptable", 4),
+	CATEGORY4(OWLUtils.OQUARE_QM_NS + "OquareCategory4", "Acceptable", 4),
 
 	/** The category5. */
-	CATEGORY5(OWLUtils.OQUO_NS + "OquareCategory5", "Exceeds the requirements", 5);
+	CATEGORY5(OWLUtils.OQUARE_QM_NS + "OquareCategory5", "Exceeds the requirements", 5);
 
 	/** The iri. */
 	private String iri;

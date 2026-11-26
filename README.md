@@ -3,7 +3,9 @@
 Java utility to include scale conversions in [OQUO](https://github.com/tecnomod-um/oquo)-based modules from TSV files.
 
 Ontology quality metrics produce raw values on very different scales (ratios, counts, percentages...). OQUO harmonises
-them by converting each raw value to the five-point OQuaRE scale (`oquo:OquareFiveCategoriesScale`):
+them by converting each raw value to the scale of a quality model. This tool creates conversions to the scale of the
+OQuaRE quality model ([`oquo-oquare-qm`](https://purl.org/oquo-oquare-qm)), an ordinal scale of five categories
+(`oquo-oquare-qm:OquareFiveCategoriesScale`):
 
 | Category | Meaning |
 |---|---|
@@ -28,12 +30,12 @@ adds them to an OQUO module, such as [oquo-huron](https://purl.org/oquo-huron).
 mvn package
 ```
 
-This runs the tests and produces `target/oquo-scale-conversion-creator-0.0.1-jar-with-dependencies.jar`.
+This runs the tests and produces `target/oquo-scale-conversion-creator-0.0.2-jar-with-dependencies.jar`.
 
 ## Usage
 
 ```bash
-java -jar target/oquo-scale-conversion-creator-0.0.1-jar-with-dependencies.jar \
+java -jar target/oquo-scale-conversion-creator-0.0.2-jar-with-dependencies.jar \
     -t scales.tsv \
     -i https://purl.org/oquo-huron \
     -o oquo-huron.owl \
@@ -52,7 +54,10 @@ java -jar target/oquo-scale-conversion-creator-0.0.1-jar-with-dependencies.jar \
 | `-V`, `--version` | Show the version and exit. |
 
 The ontology's imports are loaded too, so metrics and scales defined in imported modules are found. The output scale,
-`oquo:OquareFiveCategoriesScale`, is defined in `oquo-core`, so the ontology must import it, directly or indirectly.
+`oquo-oquare-qm:OquareFiveCategoriesScale`, and its five categories (`oquo-oquare-qm:OquareCategory1` to
+`oquo-oquare-qm:OquareCategory5`) are defined in the OQuaRE quality model, so the ontology must import
+`oquo-oquare-qm`, directly or indirectly. This is the case of the framework modules that extend the OQuaRE quality model,
+such as `oquo-huron` or `oquo-oquare`.
 
 ## TSV format
 
@@ -63,7 +68,7 @@ describes one conversion with these columns, in this order:
 |---|---|
 | `metric` | IRI of the metric. |
 | `input_scale` | IRI of the scale of the raw metric values. |
-| `output_scale` | Always `https://purl.org/oquo#OquareFiveCategoriesScale`. |
+| `output_scale` | Always `https://purl.org/oquo-oquare-qm#OquareFiveCategoriesScale`. |
 | `1` ... `5` | Raw values assigned to each OQuaRE category (see below). |
 
 Extra columns after the eighth, such as notes, are ignored.
@@ -72,8 +77,8 @@ Example (one row per conversion; in the file the columns are separated by tabs):
 
 | metric | input_scale | output_scale | 1 | 2 | 3 | 4 | 5 | Notes |
 |---|---|---|---|---|---|---|---|---|
-| `https://purl.org/oquo#NamesPerPropertyMetric` | `https://purl.org/oquo#NamesPerPropertyMetricScale` | `https://purl.org/oquo#OquareFiveCategoriesScale` | `[0, 0.1)` | `[0.1, 0.97)` | `[0.97, 1.03)` | `[1.03, 1.5)` | `[1.5, Inf)` | |
-| `https://purl.org/oquo#SynonymsPerPropertyMetric` | `https://purl.org/oquo#SynonymsPerPropertyMetricScale` | `https://purl.org/oquo#OquareFiveCategoriesScale` | `[0, 0.1)` | `[0.1, 0.6)` | `[0.6, 1.1)` | `[1.1, 2)` | `[2, Inf)` | |
+| `https://purl.org/oquo-huron#NamesPerClassMetric` | `https://purl.org/oquo-huron#NamesPerClassMetricScale` | `https://purl.org/oquo-oquare-qm#OquareFiveCategoriesScale` | `[0, 0.75)` | `[0.75, 0.9)` | `[0.9, 0.97)` | `[0.97, 1)` | `[1, Inf)` | |
+| `https://purl.org/oquo-huron#SynonymsPerDataPropertyMetric` | `https://purl.org/oquo-huron#SynonymsPerDataPropertyMetricScale` | `https://purl.org/oquo-oquare-qm#OquareFiveCategoriesScale` | `[0, 0.1)` | `[0.1, 0.4)` | `[0.4, 0.7)` | `[0.7, 1.3)` | `[1.3, Inf)` | |
 
 ### Ratio input scales
 
@@ -108,7 +113,7 @@ A line is skipped when:
 
 - it has fewer than eight columns;
 - the metric or the input scale does not exist and the corresponding `--create-*` option was not given;
-- the output scale is not `oquo:OquareFiveCategoriesScale`, or it is not found in the ontology;
+- the output scale is not `oquo-oquare-qm:OquareFiveCategoriesScale`, or it is not found in the ontology or its imports;
 - the input scale is neither a ratio scale nor an ordinal scale;
 - for ratio scales, any of the five intervals is empty or invalid, e.g. `[0)`, `[a, 1)` or `[2, 1)`.
 

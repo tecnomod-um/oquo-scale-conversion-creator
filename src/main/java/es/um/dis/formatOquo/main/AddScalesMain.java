@@ -17,7 +17,7 @@ public class AddScalesMain implements Callable<Integer> {
 	@Option(names = { "-t", "--tsv-file" }, required = true, description = "TSV file with scales specification. This should contain the following columns in this order:\n"
 			+ "metric: IRI for the metric.\n"
 			+ "input_scale: IRI for the input scale.\n"
-			+ "output_scale: IRI for the output scale. It must be https://purl.org/oquo#OquareFiveCategoriesScale, defined in oquo-core.\n"
+			+ "output_scale: IRI for the output scale. It must be https://purl.org/oquo#OquareFiveCategoriesScale, defined in https://purl.org/oquo-oquare-qm.\n"
 			+ "1: Range to assign with the OQuaRE category 1 (not acceptable). E.g. (8, 11], [0, 0.2), [0.8, Inf), (-Inf, 5], etc.\n"
 			+ "2: Range to assign with the OQuaRE category 2 (insufficient). E.g. (8, 11], [0, 0.2), [0.8, Inf), (-Inf, 5], etc.\n"
 			+ "3: Range to assign with the OQuaRE category 3 (minimally acceptable). E.g. (8, 11], [0, 0.2), [0.8, Inf), (-Inf, 5], etc.\n"
